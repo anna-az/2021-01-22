@@ -71,21 +71,13 @@ $('#form-add-student').on('submit', function(event) {
     }
 
     server.createStudent(student).then(response => {
-        server.getStudentsList().then(response => {
-        
-            const students = Object.entries(response).map(value => {
-                const [ id, student ] = value;
-        
-                student.id = id;
-
-                return student;
-            })
-        
-            $('#students-list')
-                .empty();
-
-            students.forEach(addStudent);
-        });
+        const id = response.name;
+        server.getStudentById(id).then(response => {
+            console.log(response);
+            const students = response;
+            students.id = id;
+            addStudent(students);
+        })
     })
     $('#form-add-student')[0].reset();
     alert('Student added');
